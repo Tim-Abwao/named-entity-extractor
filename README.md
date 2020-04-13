@@ -11,8 +11,8 @@
 1. Download the files, and set up a virtual environment:
 
 ``` bash
-git clone https://github.com/Tim-Abwao/spaCy-Text-App.git
-cd spaCy-Text-App
+git clone https://github.com/Tim-Abwao/text-mining-spacy.git
+cd text-mining-spacy
 python3 -m venv venv
 source venv/bin/activate
 ```
