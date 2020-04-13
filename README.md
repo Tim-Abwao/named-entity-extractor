@@ -1,16 +1,15 @@
-# A simple program for text mining using spaCy NLP
-[SpaCy](https://spacy.io/) is a powerful, user-friendly, open-source Natural Language Processing package in Python made by [Explosions AI](https://explosion.ai/).
+# Basic text mining using spaCy NLP
+[SpaCy](https://spacy.io/) is a powerful, user-friendly, open-source Natural Language Processing package in Python, made by [Explosions AI](https://explosion.ai/). Text to be processed will be extracted from documents using [tika-python](https://github.com/chrismattmann/tika-python). 
 
-Text to be processed will be derived from documents using `tika-python`. [Apache Tika](http://tika.apache.org) can extract text and metadata from hundreds of file types.
-
-[tika-python](https://github.com/chrismattmann/tika-python) connects over the internet to the Tika REST server, but you can optionally install Apache Tika locally on your system.  
+[Apache Tika](http://tika.apache.org) can extract text and metadata from "*over a thousand different file types*". The `tika-python` package connects over the internet to the Tika REST server; but you can optionally run the tika server locally (preferred here).
  
 ## Prerequisites
 - Basic knowledge of **Python** and **jupyter notebooks**.
-- **Apache Tika** is a **Java** module: you'll need to have Java installed.
+- **Apache Tika** is a [Java]('https://www.java.com/en/')-based program: you'll need to have Java installed.
 
 ## Getting Started
-Download the files, and set up a virtual environment with:
+1. Download the files, and set up a virtual environment:
+
 ``` bash
 git clone https://github.com/Tim-Abwao/spaCy-Text-App.git
 cd spaCy-Text-App
@@ -18,38 +17,39 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-Optionally update pip, then install the required modules:
+2. Install the required packages:
+
 ``` bash
 pip install -U pip
 pip install -r requirements.txt
-```
-
-Be sure to install the [*spaCy* model](https://spacy.io/models). For the small model:
-``` bash
 python -m spacy download en_core_web_sm
 ```
-You can then select between the jupyter notebook `NLP.ipynb` and the Python script `NLP.py`.
+3. Download the tika-server jar file, and verify its integrity as advised. You can get it [here](https://www.apache.org/dyn/closer.cgi/tika/tika-server-1.24.jar). Afterwards, open a new terminal where it is, and start the tika server:
+
+```bash
+java -jar tika-server-1.24.jar
+```
+
+
+Navigate back to the terminal with the active virtual environment. You can then choose to use either the Jupyter notebook or the Python script.
 
 ## (a). Using the Jupyter Notebook
 This lets you run the code interactively - cell by cell -  so that you can easily see what each piece of code does, and make any desired changes.
 
-The following command should open up a browser window (or tab, if your default browser is already open) and display the `NLP.ipynb` notebook .
-``` bash
-jupyter notebook NLP.ipynb
-```
+The following command should start the notebook server, and display the `text-mining.ipynb` notebook in your browser.
 
-You could also just enter
 ``` bash
-jupyter notebook
+jupyter notebook text-mining.ipynb
+
 ```
-then manually find and open the **NLP.ipynb** notebook.
 
 ## (b). Using the Python Script
-Run the `NLP.py` script in your terminal with:
+Run the following:
 ``` bash
-python NLP.py
+python text-mining.py
+
 ```
 
-A [Tkinter](https://docs.python.org/3/library/tkinter.html#module-tkinter)-based GUI will then pop up and prompt you to navigate to, and select the document to process. The script should then continue running, and print what's happening at several stages. Afterwards, you'll be prompted to select a *destination directory*, where the extracted information will be saved as an excel file called **text-mining.xlsx**. 
+A [Tkinter](https://docs.python.org/3/library/tkinter.html#module-tkinter) GUI will then pop up to help you navigate to, and select the document to process. The script should then continue running. Afterwards, you'll be prompted to select a **destination directory**, where the extracted information will be saved as an excel file called **text-mining.xlsx**. 
 
 That's all. Enjoy.
