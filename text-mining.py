@@ -7,16 +7,45 @@ from tkinter import ttk
 
 root = Tk()
 root.title('Simple Text Mining App')
+root.resizable(False, False)
+
+style = ttk.Style()
+style.configure("TFrame", background="ivory")
+style.configure("TLabel", foreground="darkslategrey", background="ivory",
+                font="serif 14")
+style.configure("I.TLabel", foreground="darkslategrey", background="ivory",
+                font="serif 13 normal italic ")
+style.configure("TButton", foreground="slategrey", background="aquamarine",
+                font="serif 12")
+
+
+extensions = ['.pdf', '.csv', '.doc', '.docx', '.xls', '.xlsx', '.txt', '.odt',
+              '.json', '.htm', '.html', '.tsv',  '.pptx', '.epub', '.log',
+              '.rtf', '.jpeg', '.jpg', '.gif', '.ogg',  '.png', '.msg', '.wav',
+              '.eml', '.mp3', '.ps', '.psv', '.tff', '.tif', '.tiff'
+              ]
 
 
 def open_file():
     filename = filedialog.askopenfilename(initialdir='.',
                                           title="Please select document",
-                                          filetypes=(("all files", "*.*"),
+                                          filetypes=(('pdf', '*.pdf'),
                                                      ("plain text", "*.txt"),
-                                                     ('pdf', '*.pdf'),
-                                                     ('word', '*.docx')))
+                                                     ('word', '*.docx'),
+                                                     ("all files", "*.*"))
+                                          )
     return filename
+
+
+def get_text():
+    # select file and obtain it's contents
+    file_name = open_file()
+
+    try:
+        text = textract.process(file_name).decode()
+        return text
+    except UnicodeDecodeError:
+        messagebox.showerror(message='Unable to parse file')
 
 
 def process_text():
@@ -29,13 +58,12 @@ def process_text():
                                    mode='determinate', value=5)
     progress_bar.place(relx=0.15, rely=0.7)
 
-    # select file and obtain it's contents
-    file_name = open_file()
-    text = textract.process(file_name).decode()
+    text = get_text()
     progress_bar['value'] = 15
 
     # loading the model
     nlp = spacy.load("en_core_web_sm")
+    progress_bar['value'] = 35
 
     # Getting named entity information
     doc = nlp(text)
@@ -49,6 +77,8 @@ def process_text():
         # Getting some context on the obtained named-entity
         ent_sentences.append(entity.sent.text.replace('\n', ' '))
 
+    progress_bar['value'] = 75
+
     extracted_info = pd.DataFrame({'Entity': ent_text, 'Type': ent_labels,
                                    'Context': ent_sentences})
     labels = extracted_info.Type.unique()
@@ -56,8 +86,11 @@ def process_text():
     Descriptions = pd.DataFrame({"Type": labels,
                                  "Description": ent_descriptions})
 
+    progress_bar['value'] = 90
+
     # getting destination
-    output_file = filedialog.asksaveasfilename()
+    output_file = filedialog.asksaveasfilename(initialdir='.',
+                                               filetypes=[("Excel", '.xlsx')])
 
     # Saving the extracted_info as an excel file (a sheet for each type)
     with pd.ExcelWriter(output_file) as writer:
@@ -68,26 +101,27 @@ def process_text():
                                                  index=False)
 
     messagebox.showinfo(message=f'Done! Results saved as {output_file!r}')
+    progress_bar.destroy()  # remove progress_bar after completion
 
 
-frame = ttk.Frame(root, width=600, height=400)
+frame = ttk.Frame(root, width=600, height=350)
 frame['padding'] = (5, 10)
 frame['borderwidth'] = 2
 
-intro_text = "This is a simple application useful for extracting text from " +\
-             "files in various formats."
+intro_text = "This is a simple application useful for extracting " +\
+             "information from text files in a variety of formats." +\
+             "Supported formats include:"
 intro = ttk.Label(frame, text=intro_text,  wraplength=480)
-intro.place(relx=0.07, rely=0.1, relwidth=0.86, relheight=0.2)
+intro.place(relx=0.07, rely=0.1, relwidth=0.86, relheight=0.25)
 
-file_select_button = ttk.Button(frame, text='Select file', width=30,
+supported_extensions = ttk.Label(frame, text='  '.join(extensions),
+                                 wraplength=350, style='I.TLabel')
+supported_extensions.place(relx=0.2, rely=0.35)
+
+file_select_button = ttk.Button(frame, text='Select file', width=25,
                                 command=process_text)
-file_select_button.place(relx=0.3, rely=0.4)
+file_select_button.place(relx=0.3, rely=0.8)
 
-# file_save_button = ttk.Button(frame, text='Select file', width=30,
-#                                 command=process_text)
-# file_save_button.place(relx=0.3, rely=0.3)
 
 frame.pack()
-
-
 root.mainloop()
