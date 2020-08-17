@@ -37,9 +37,15 @@ def open_file():
     return filename
 
 
-def get_text():
+def get_text(progress):
     # select file and obtain it's contents
+    progress.place(relx=0.15, rely=0.7)
+    progress['value'] = 5
     file_name = open_file()
+
+    if not file_name:  # if no file is selected
+        messagebox.showinfo(message="Please select a file to proceed")
+        progress.destroy()
 
     try:
         text = textract.process(file_name).decode()
@@ -57,10 +63,14 @@ def process_text():
     progress_bar = ttk.Progressbar(root, orient='horizontal', length=400,
                                    mode='determinate', value=5)
     progress_bar.place(relx=0.15, rely=0.7)
+    progress_bar['value'] = 5
 
-    text = get_text()
+    text = get_text(progress_bar)
+    if not text:
+        messagebox.showwarning(message="Couldn't find text to process.")
+        progress_bar.destroy()
+
     progress_bar['value'] = 15
-
     # loading the model
     nlp = spacy.load("en_core_web_sm")
     progress_bar['value'] = 35
@@ -88,8 +98,9 @@ def process_text():
 
     progress_bar['value'] = 90
 
-    # getting destination
+    # getting save-as name
     output_file = filedialog.asksaveasfilename(initialdir='.',
+                                               initialfile="text_results.xlsx",
                                                filetypes=[("Excel", '.xlsx')])
 
     # Saving the extracted_info as an excel file (a sheet for each type)
@@ -110,7 +121,7 @@ frame['borderwidth'] = 2
 
 intro_text = "This is a simple application useful for extracting " +\
              "information from text files in a variety of formats." +\
-             " Supported formats include:"
+             " Supported extensions include:"
 intro = ttk.Label(frame, text=intro_text,  wraplength=480)
 intro.place(relx=0.07, rely=0.1, relwidth=0.86, relheight=0.25)
 
