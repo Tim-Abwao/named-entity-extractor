@@ -1,8 +1,10 @@
 # Basic text mining using spaCy NLP
 
-[spaCy][1] is a powerful, user-friendly, open-source Natural Language Processing package for Python, made by [Explosions][2].
+This simple app uses [spaCy][1] to extract [Named Entities][6] from text. [spaCy][1] is a powerful, user-friendly, open-source Natural Language Processing package for Python, made by [Explosions][2].
 
 Text to be processed will be extracted from documents using [textract][3].
+
+![screenshot](screenshot.png)
 
 ## Getting Started
 
@@ -29,11 +31,7 @@ Text to be processed will be extracted from documents using [textract][3].
     python text_mining.py
     ```
 
-A [Tkinter][4] [GUI][5] should pop up to help you navigate to, and select the document to process.
-
-![screenshot](screenshot.png)
-
-The script is programmed to extract [named entities][6] plus some context.
+A [Tkinter][4] [GUI][5] should pop up to help you navigate to, and select the document to process. The app is programmed to extract [named entities][6], plus some context, and save them as an Excel file.
 
 [1]: https://spacy.io/
 [2]: https://explosion.ai/
