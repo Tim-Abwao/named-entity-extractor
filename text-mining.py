@@ -110,7 +110,7 @@ frame['borderwidth'] = 2
 
 intro_text = "This is a simple application useful for extracting " +\
              "information from text files in a variety of formats." +\
-             "Supported formats include:"
+             " Supported formats include:"
 intro = ttk.Label(frame, text=intro_text,  wraplength=480)
 intro.place(relx=0.07, rely=0.1, relwidth=0.86, relheight=0.25)
 
@@ -124,4 +124,5 @@ file_select_button.place(relx=0.3, rely=0.8)
 
 
 frame.pack()
+root.bind('<Return>', process_text)
 root.mainloop()
