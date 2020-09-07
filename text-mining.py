@@ -6,7 +6,8 @@ import textract
 
 
 class TextMiningApp(ttk.Frame):
-    """The class of methods to extract and process text."""
+    """Extract and predict entities in text from files."""
+
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
@@ -28,7 +29,7 @@ class TextMiningApp(ttk.Frame):
                    '.tif', '.tiff')
 
     def _create_widgets(self):
-        """Adds the descriptive labels, and a button for selecting files."""
+        """Add the descriptive labels, and a button for selecting files."""
         self.intro = ttk.Label(self, text=self._intro_text,  wraplength=480)
         self.intro.place(relx=0.07, rely=0.1, relwidth=0.86, relheight=0.25)
         self.extensions = ttk.Label(self, wraplength=350, style='I.TLabel',
@@ -39,7 +40,7 @@ class TextMiningApp(ttk.Frame):
         self.file_select.place(relx=0.3, rely=0.8)
 
     def _set_style(self):
-        """Defines the style attributes of the widgets."""
+        """Set the style attributes of the widgets."""
         style = ttk.Style()
         style.configure("TFrame", background="ivory")
         style.configure("TLabel", foreground="darkslategrey",
@@ -52,7 +53,7 @@ class TextMiningApp(ttk.Frame):
 
     def _get_text(self):
         """
-        Obtains text from selected documents using textract, and returns it as
+        Obtain text from selected documents using textract, and return it as
         a string object.
         """
         # select file and obtain it's contents
@@ -78,7 +79,7 @@ class TextMiningApp(ttk.Frame):
 
     def _extract_entities(self):
         """
-        Makes predictions on entities present in the text using one of spaCy's
+        Make predictions on entities present in the text using one of spaCy's
         pretrained core models (en_core_web_sm currently).
         """
         # loading the pretrained model
@@ -100,7 +101,7 @@ class TextMiningApp(ttk.Frame):
 
     def _save_results(self):
         """
-        Saves extracted information as an excel file, with a sheet for every
+        Save extracted information as an excel file, with a sheet for every
         entity type.
         """
         # getting 'save-as' name
@@ -126,7 +127,7 @@ class TextMiningApp(ttk.Frame):
 
     def _process_text(self):
         """
-        Applies all the methods to extract text from documents, obtain named
+        Apply all the methods to extract text from documents, obtain named
         entity information and export the results to an excel file.
         """
         # initialise progress bar
