@@ -4,7 +4,7 @@ This simple app uses [spaCy][1] to extract [Named Entities][6] from text. [spaCy
 
 Text to be processed will be extracted from documents using [textract][3].
 
-![screenshot](screenshot.png)
+![screencast](screen.gif)
 
 ## Getting Started
 
