@@ -31,7 +31,7 @@ Text to be processed will be extracted from documents using [textract][3].
     python text_mining.py
     ```
 
-A [tkinter][4] [GUI][5] should pop up to help you navigate to, and select the document to process. The app is programmed to extract [named entities][6], plus some context, and save them as an Excel file.
+A [tkinter][4] [GUI][5] (demonstrated above) should pop up to help you navigate to, and select a document to process. The app is programmed to extract [named entities][6], with some context, and export them as an Excel file.
 
 [1]: https://spacy.io/
 [2]: https://explosion.ai/
