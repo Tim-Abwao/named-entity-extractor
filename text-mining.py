@@ -83,7 +83,7 @@ class TextMiningApp(ttk.Frame):
         pretrained core models (en_core_web_sm currently).
         """
         # load pretrained spaCy model
-        nlp = spacy.load("en_core_web_sm")
+        nlp = spacy.load("en_core_web_md")
         self.progress['value'] = 35
 
         # Predict entities
