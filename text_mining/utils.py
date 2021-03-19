@@ -4,6 +4,11 @@ import pandas as pd
 from pathlib import Path
 import spacy
 import textract
+import logging
+
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(levelname)s: %(message)s')
 
 
 def select_file():
@@ -23,6 +28,7 @@ def select_file():
     if not file:  # If file dialog is closed with no file selected
         return None
     else:
+        logging.info(f'Found file {file!r}')
         return Path(file)
 
 
@@ -53,6 +59,7 @@ def extract_entity_info(text):
         'Context'.
     """
     # Load the pretrained spaCy model
+    logging.info('Analysing extracted text...')
     nlp = spacy.load('en_core_web_md')
 
     # Get entity predictions
@@ -62,6 +69,7 @@ def extract_entity_info(text):
 
     entity_df = pd.DataFrame(entity_info,
                              columns=['Entity', 'Type', 'Context'])
+    logging.info(f'Done. {len(entity_df)} named entities found.')
 
     # Remove 'newline' to get continuous text
     return entity_df.applymap(lambda x: x.replace('\n', ' '))
@@ -125,4 +133,6 @@ def save_results_to_excel(entity_df):
             (ent_data[['Entity', 'Context']]
                 .dropna()
                 .to_excel(writer, index=False, sheet_name=ent_name))
-    return output_file.name
+
+    logging.info(f'Results saved as "{output_file}"')
+    return output_file

@@ -76,7 +76,7 @@ class TextMiningApp(ttk.Frame):
             # Save the results
             output_filename = utils.save_results_to_excel(entity_df)
             messagebox.showinfo(
-                message=f'Done! File saved as {output_filename!r}')
+                message=f'Done! File saved as "{output_filename}"')
 
             # Remove progressbar after completion
             self.progress.destroy()
