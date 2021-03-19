@@ -22,13 +22,13 @@ Text to be processed will be extracted from documents using [textract][3].
     ``` bash
     pip install -U pip
     pip install -r requirements.txt
-    python -m spacy download en_core_web_sm
+    python -m spacy download en_core_web_md
     ```
 
-3. Run the `text_mining.py` script to start the app:
+3. Start the app:
 
     ```python
-    python text_mining.py
+    python -m text_mining
     ```
 
 A [tkinter][4] [GUI][5] (demonstrated above) should pop up to help you navigate to, and select a document to process. The app is programmed to extract [named entities][6], with some context, and export them as an Excel file.
