@@ -1,8 +1,10 @@
-# Basic text mining using spaCy NLP
+# Named Entity Extraction with *spaCy*
 
-This simple app uses [spaCy][1] to extract [Named Entities][6] from text. [spaCy][1] is a powerful, user-friendly, open-source Natural Language Processing package for Python, made by [Explosion][2].
+This program uses [spaCy][spacy] to obtain [Named Entities][n_ents] from text. [spaCy][spacy] is a powerful, user-friendly, open-source Natural Language Processing package for Python.
 
-Text to be processed will be extracted from documents using [textract][3].
+Text to be processed will be extracted from documents using [textract][textract]. Please see the [textract installation page][textract_install] for details on required dependencies.
+
+The results (*named entities* and some *context*) are saved in an excel file.
 
 ![screencast](screen.gif)
 
@@ -11,8 +13,8 @@ Text to be processed will be extracted from documents using [textract][3].
 1. Download the files, and set up a virtual environment:
 
     ```bash
-    git clone https://github.com/Tim-Abwao/text-mining-spacy.git
-    cd text-mining-spacy
+    git clone https://github.com/Tim-Abwao/named-entity-extractor.git
+    cd named-entity-extractor
     python3 -m venv venv
     source venv/bin/activate
     ```
@@ -22,20 +24,19 @@ Text to be processed will be extracted from documents using [textract][3].
     ``` bash
     pip install -U pip
     pip install -r requirements.txt
-    python -m spacy download en_core_web_md
     ```
 
 3. Start the app:
 
     ```python
-    python -m text_mining
+    python -m entity_extractor
     ```
 
-A [tkinter][4] [GUI][5] (demonstrated above) should pop up to help you navigate to, and select a document to process. The app is programmed to extract [named entities][6], with some context, and export them as an Excel file.
+A [tkinter][tkinter] [GUI][gui_wiki] (demonstrated above) should pop up to help navigate to, and select a document to process.
 
-[1]: https://spacy.io/
-[2]: https://explosion.ai/
-[3]: https://textract.readthedocs.io/en/stable/index.html
-[4]: https://docs.python.org/3/library/tkinter.html#module-tkinter
-[5]: https://en.wikipedia.org/wiki/Graphical_user_interface
-[6]: https://en.wikipedia.org/wiki/Named_entity
+[spacy]: https://spacy.io/
+[textract]: https://textract.readthedocs.io/en/stable/index.html
+[textract_install]: https://textract.readthedocs.io/en/latest/installation.html
+[tkinter]: https://docs.python.org/3/library/tkinter.html#module-tkinter
+[gui_wiki]: https://en.wikipedia.org/wiki/Graphical_user_interface
+[n_ents]: https://en.wikipedia.org/wiki/Named_entity
