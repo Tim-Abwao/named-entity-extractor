@@ -1,4 +1,4 @@
-from text_mining.gui import run_app
+from entity_extractor.gui import run_app
 
 if __name__ == "__main__":
     run_app()

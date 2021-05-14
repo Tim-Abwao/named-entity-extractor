@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from tkinter import Tk, messagebox, ttk, PhotoImage
 
-from text_mining import utils
+from entity_extractor import utils
 
 
 intro_text = """This is a simple app useful for extracting entity information \
@@ -139,6 +139,6 @@ class EntityExtractor(ttk.Frame):
 def run_app():
     """Start the graphical user interface."""
     root = Tk()
-    root.wm_iconphoto(True, PhotoImage(file='text_mining/icon.png'))
+    root.wm_iconphoto(True, PhotoImage(file='entity_extractor/icon.png'))
     app = EntityExtractor(master=root)
     app.mainloop()
