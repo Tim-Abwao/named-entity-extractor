@@ -1,144 +1,163 @@
 #!/usr/bin/env python3
-from tkinter import Tk, messagebox, ttk, PhotoImage
+import tkinter as tk
+from tkinter import ttk
+from typing import Optional
 
 from entity_extractor import utils
 
-
-intro_text = """This is a simple app useful for extracting entity information \
-from text files in a variety of formats. Supported file extensions include:"""
-
-all_formats = [
-    ".pdf",
-    ".csv",
-    ".doc",
-    ".docx",
-    ".xls",
+supported_formats = [
+    ".csv,",
+    ".doc,",
+    ".docx,",
+    ".eml,",
+    ".epub,",
+    ".gif,",
+    ".htm,",
+    ".html,",
+    ".jpeg,",
+    ".jpg,",
+    ".json,",
+    ".log,",
+    ".mp3,",
+    ".msg,",
+    ".odt,",
+    ".ogg,",
+    ".pdf,",
+    ".png,",
+    ".pptx,",
+    ".ps,",
+    ".psv,",
+    ".rtf,",
+    ".tab,",
+    ".tff,",
+    ".tif,",
+    ".tiff,",
+    ".tsv,",
+    ".txt,",
+    ".wav,",
+    ".xls,",
     ".xlsx",
-    ".txt",
-    ".odt",
-    ".json",
-    ".htm",
-    ".html",
-    ".tsv",
-    ".pptx",
-    ".epub",
-    ".log",
-    ".rtf",
-    ".jpeg",
-    ".jpg",
-    ".gif",
-    ".ogg",
-    ".png",
-    ".msg",
-    ".wav",
-    ".eml",
-    ".mp3",
-    ".ps",
-    ".psv",
-    ".tff",
-    ".tif",
-    ".tiff",
 ]
 
 
-class EntityExtractor(ttk.Frame):
-    """Extract text from files and predict the named entities present."""
+class EntityExtractor(tk.Frame):
+    def __init__(self, master: Optional[tk.Tk]) -> None:
+        """Extract text from files and predict the named entities present
 
-    def __init__(self, master=None):
+        Parameters
+        ----------
+        master : Optional[Tk]
+            The root (top-level) window.
+        """
         super().__init__(master)
         self.master = master
         self.master.title("Named Entity Extractor")
+        self.master.geometry("600x350")
         self.master.resizable(False, False)
-        self.configure(width=600, height=350)
-        self.style = self._set_style()
-        self._create_widgets()
+        self.master.wm_iconphoto(
+            True, tk.PhotoImage(file="entity_extractor/icon.png")
+        )
         self.pack()
+        self._create_widgets()
 
-    _intro_text = intro_text
+    intro_text = (
+        "Quickly collect entity information (people, places, companies, ...)"
+        " from text files in a variety of formats:"
+    )
+    file_extensions = "  ".join(supported_formats)
 
-    _file_extensions = "  ".join(all_formats)
-
-    def _create_widgets(self):
+    def _create_widgets(self) -> None:
         """Add widgets to the frame/window."""
-        # Introduction
-        self.intro = ttk.Label(self, text=self._intro_text, wraplength=540)
-        self.intro.place(relx=0.07, rely=0.12, relheight=0.25)
 
-        # List of supported file extensions
-        self.file_extensions = ttk.Label(
-            self, wraplength=360, style="I.TLabel", text=self._file_extensions
-        )
-        self.file_extensions.place(relx=0.2, rely=0.4)
+        self.canvas = tk.Canvas(self, width=600, height=350)
 
-        # Button to select an input file
-        self.select_input_file = ttk.Button(
-            self, text="Select file", width=25, command=self._process_text
-        )
-        self.select_input_file.place(relx=0.3, rely=0.7, relheight=0.12)
-
-    def _set_style(self):
-        """Set style attributes for the widgets."""
-        style = ttk.Style()
-        # Frame style
-        style.configure("TFrame", background="ivory")
-        # Label style
-        style.configure(
-            "TLabel",
-            foreground="darkslategrey",
-            background="ivory",
-            font="Times 15",
-        )
-        # Label style with bold, italic font
-        style.configure(
-            "I.TLabel",
-            foreground="darkslategrey",
-            background="ivory",
-            font="Times 14 bold italic",
-        )
-        # Button style
-        style.configure(
-            "TButton",
-            foreground="teal",
-            background="aquamarine",
-            font="serif 12",
+        # Add background image
+        self.background_image = tk.PhotoImage(file="entity_extractor/bg.png")
+        self.canvas.create_image(
+            0, 0, image=self.background_image, anchor="nw"
         )
 
-    def _process_text(self):
-        """Obtain named-entity information from a text file, and save the
-        output in an an excel file.
+        # Add title
+        self.canvas.create_text(
+            (70, 40),
+            anchor="nw",
+            font=("Courier", 25, "bold"),
+            text="named-entity-extractor",
+        )
+
+        # Add description
+        self.canvas.create_text(
+            (45, 90),
+            anchor="nw",
+            font=("Times", 13),
+            text=self.intro_text,
+            width=520,
+        )
+
+        # Add supported file extensions
+        self.canvas.create_text(
+            (100, 150),
+            anchor="nw",
+            font=("Courier", 11),
+            text=self.file_extensions,
+            width=400,
+        )
+
+        # Add button to select an input file
+        self.button = tk.Button(
+            self,
+            bg="#777",
+            command=self._process_text,
+            default="active",
+            fg="white",
+            font=("Courier", 12, "bold"),
+            relief="flat",
+            text="Select file",
+            width=25,
+        )
+        self.master.bind("<Return>", lambda _: self.button.invoke())
+        self.canvas.create_window(
+            (170, 260), anchor="nw", height=40, width=250, window=self.button
+        )
+
+        self.canvas.pack()
+
+    def _process_text(self) -> None:
+        """Obtain named-entity information from a file, and save the results
+        in an excel file.
         """
-        # Initialise the progress bar
+        self.percent_complete = tk.IntVar(self, value=10)
         self.progress = ttk.Progressbar(
-            self, orient="horizontal", length=400, mode="determinate", value=5
+            self,
+            length=400,
+            mode="determinate",
+            orient="horizontal",
+            variable=self.percent_complete,
         )
         self.progress.place(relx=0.15, rely=0.9)
 
-        # Acquire text from the input file
         self.text = utils.read_text_from_file()
-        self.progress["value"] = 25
+        self.percent_complete.set(75)
 
-        if self.text is None:  # If the text content is empty
-            messagebox.showinfo(message="Please select a file to proceed")
+        if self.text is None:
+            tk.messagebox.showinfo(message="Please select a file to proceed")
             self.progress.destroy()
-
         else:
-            # Predict entities present in the text
             entity_info = utils.extract_entity_info(self.text)
-            self.progress["value"] = 80
-
-            # Save the results
+            self.percent_complete.set(95)
             output_filename = utils.save_results_to_excel(entity_info)
-            messagebox.showinfo(
+
+            self.progress.stop()
+            self.progress.destroy()
+            tk.messagebox.showinfo(
                 message=f'Done! File saved as "{output_filename}"'
             )
 
-            # Remove progressbar after completion
-            self.progress.destroy()
+            del self.text
 
 
-def run_app():
-    """Start the graphical user interface."""
-    root = Tk()
-    root.wm_iconphoto(True, PhotoImage(file='entity_extractor/icon.png'))
+def run_app() -> None:
+    """Launch the graphical user interface."""
+    root = tk.Tk()
     app = EntityExtractor(master=root)
     app.mainloop()
