@@ -130,7 +130,7 @@ def set_output_file() -> Path:
     """
     output_file = asksaveasfilename(
         initialdir=".",
-        initialfile="text_results.xlsx",
+        initialfile="entity-info.xlsx",
         filetypes=[("Excel", ".xlsx")],
     )
 
