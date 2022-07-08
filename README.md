@@ -1,10 +1,10 @@
 # Named Entity Extraction with *spaCy*
 
-This program uses [spaCy][spacy] to obtain [Named Entities][n_ents] from text. [spaCy][spacy] is a powerful, user-friendly, open-source Natural Language Processing package for Python.
+Predict the [named entities][n_ents] present in a text file using [spaCy][spacy]. *spaCy* is a powerful, user-friendly, open-source [Natural Language Processing][nlp] library in Python.
 
-Text to be processed will be extracted from documents using [textract][textract]. Please see the [textract installation page][textract_install] for details on required dependencies.
+Text to be processed is extracted from documents using [textract][textract]. Please see the [textract installation page][textract_install] for details on required dependencies.
 
-The results (*named entities* and some *context*) are saved in an excel file.
+The results (*named entities* and some *context*) are then saved in an excel file.
 
 ![screencast](screen.gif)
 
@@ -40,3 +40,4 @@ A [tkinter][tkinter] [GUI][gui_wiki] (demonstrated above) should pop up to help 
 [tkinter]: https://docs.python.org/3/library/tkinter.html#module-tkinter
 [gui_wiki]: https://en.wikipedia.org/wiki/Graphical_user_interface
 [n_ents]: https://en.wikipedia.org/wiki/Named_entity
+[nlp]: https://en.wikipedia.org/wiki/Natural_language_processing
