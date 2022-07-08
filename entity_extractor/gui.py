@@ -10,39 +10,9 @@ logging.basicConfig(
     level=logging.INFO,
     datefmt="%H:%M:%S",
 )
-supported_formats = [
-    ".csv,",
-    ".doc,",
-    ".docx,",
-    ".eml,",
-    ".epub,",
-    ".gif,",
-    ".htm,",
-    ".html,",
-    ".jpeg,",
-    ".jpg,",
-    ".json,",
-    ".log,",
-    ".mp3,",
-    ".msg,",
-    ".odt,",
-    ".ogg,",
-    ".pdf,",
-    ".png,",
-    ".pptx,",
-    ".ps,",
-    ".psv,",
-    ".rtf,",
-    ".tab,",
-    ".tff,",
-    ".tif,",
-    ".tiff,",
-    ".tsv,",
-    ".txt,",
-    ".wav,",
-    ".xls,",
-    ".xlsx",
-]
+
+with open("entity_extractor/supported_formats.txt") as file:
+    supported_formats = file.read().split()
 
 
 class EntityExtractor(tk.Frame):
