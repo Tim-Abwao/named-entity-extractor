@@ -27,7 +27,7 @@ class EntityExtractor(tk.Frame):
         super().__init__(master)
         self.master = master
         self.master.title("Named Entity Extractor")
-        self.master.geometry("600x350")
+        self.master.geometry("540x300")
         self.master.resizable(False, False)
         self.master.wm_iconphoto(
             True, tk.PhotoImage(file="entity_extractor/icon.png")
@@ -39,46 +39,39 @@ class EntityExtractor(tk.Frame):
         "Quickly collect entity information (people, places, companies, ...)"
         " from text files in a variety of formats:"
     )
-    file_extensions = "  ".join(supported_formats)
+    file_extensions = ",  ".join(supported_formats)
 
     def _create_widgets(self) -> None:
         """Add widgets to the frame/window."""
-
-        self.canvas = tk.Canvas(self, width=600, height=350)
-
-        # Add background image
+        self.canvas = tk.Canvas(self, width=540, height=320)
         self.background_image = tk.PhotoImage(file="entity_extractor/bg.png")
         self.canvas.create_image(
             0, 0, image=self.background_image, anchor="nw"
         )
-
-        # Add title
+        # Title
         self.canvas.create_text(
-            (70, 40),
+            (60, 20),
             anchor="nw",
-            font=("Courier", 25, "bold"),
+            font=("Courier", 24, "bold"),
             text="named-entity-extractor",
         )
-
-        # Add description
+        # Summary
         self.canvas.create_text(
-            (45, 90),
+            (45, 80),
             anchor="nw",
             font=("Times", 13),
             text=self.intro_text,
-            width=520,
+            width=480,
         )
-
-        # Add supported file extensions
+        # Supported file extensions
         self.canvas.create_text(
-            (100, 150),
+            (70, 125),
             anchor="nw",
             font=("Courier", 11),
             text=self.file_extensions,
             width=400,
         )
-
-        # Add button to select an input file
+        # Button to select input file
         self.button = tk.Button(
             self,
             bg="#777",
@@ -88,12 +81,12 @@ class EntityExtractor(tk.Frame):
             font=("Courier", 12, "bold"),
             relief="flat",
             text="Select file",
-            width=25,
         )
-        self.master.bind("<Return>", lambda _: self.button.invoke())
         self.canvas.create_window(
-            (170, 260), anchor="nw", height=40, width=250, window=self.button
+            (150, 235), anchor="nw", height=40, width=240, window=self.button
         )
+        # Interpret 'Enter' key press as button press
+        self.master.bind("<Return>", lambda _: self.button.invoke())
 
         self.canvas.pack()
 
