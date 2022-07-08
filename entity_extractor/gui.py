@@ -5,6 +5,11 @@ from typing import Optional
 
 from entity_extractor import utils
 
+logging.basicConfig(
+    format="[%(levelname)s %(asctime)s.%(msecs)03d] %(message)s",
+    level=logging.INFO,
+    datefmt="%H:%M:%S",
+)
 supported_formats = [
     ".csv,",
     ".doc,",
