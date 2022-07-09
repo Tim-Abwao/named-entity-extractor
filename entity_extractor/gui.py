@@ -1,7 +1,12 @@
-#!/usr/bin/env python3
+import logging
 import tkinter as tk
+from pathlib import Path
 from tkinter import ttk
+from tkinter.filedialog import askopenfilename, asksaveasfilename
+from tkinter.messagebox import showerror
 from typing import Optional
+
+import textract
 
 from entity_extractor import utils
 
@@ -16,14 +21,13 @@ with open("entity_extractor/supported_formats.txt") as file:
 
 
 class EntityExtractor(tk.Frame):
-    def __init__(self, master: Optional[tk.Tk]) -> None:
-        """Extract text from files and predict the named entities present
+    """Extract text from files and predict the named entities present.
 
-        Parameters
-        ----------
-        master : Optional[Tk]
-            The root (top-level) window.
-        """
+    Args:
+        master (Optional[tkinter.Tk]): The root (top-level) window.
+    """
+
+    def __init__(self, master: Optional[tk.Tk]) -> None:
         super().__init__(master)
         self.master = master
         self.master.title("Named Entity Extractor")
@@ -90,11 +94,52 @@ class EntityExtractor(tk.Frame):
 
         self.canvas.pack()
 
+    def _get_input_file(self) -> None:
+        """Create a file-dialog to navigate to, and select a file."""
+        filename = askopenfilename(
+            initialdir=".",
+            title="Please select a document",
+            filetypes=(
+                ("pdf", "*.pdf"),
+                ("text", "*.txt"),
+                ("word", "*.docx"),
+                ("all files", "*.*"),
+            ),
+            parent=self,
+        )
+        if filename:
+            self.input_file = Path(filename)
+        else:
+            showerror(
+                title="File Error",
+                message="Please select a valid file",
+            )
+            self.input_file = None
+
+    def _extract_text(self) -> None:
+        """Get the contents of the input file as a string."""
+        logging.info(f"Found '{self.input_file}'. Extracting text...")
+        try:
+            self.text = textract.process(self.input_file).decode()
+        except Exception as error:
+            showerror(title="Error reading file", message=error)
+            self.text = None
+
+    def _get_output_filename(self) -> Path:
+        """Create a file dialog to select a destination for the results."""
+        output_file = asksaveasfilename(
+            initialdir=".",
+            initialfile="entity-info.xlsx",
+            filetypes=[("Excel", ".xlsx")],
+            parent=self,
+        )
+        self.output_file = Path(output_file or "entity-info.xlsx")
+
     def _process_text(self) -> None:
         """Obtain named-entity information from a file, and save the results
         in an excel file.
         """
-        self.percent_complete = tk.IntVar(self, value=10)
+        self.percent_complete = tk.IntVar(self, value=5)
         self.progress = ttk.Progressbar(
             self,
             length=400,
@@ -102,26 +147,31 @@ class EntityExtractor(tk.Frame):
             orient="horizontal",
             variable=self.percent_complete,
         )
-        self.progress.place(relx=0.15, rely=0.9)
+        self.progress.place(relx=0.15, rely=0.92)
 
-        self.text = utils.read_text_from_file()
-        self.percent_complete.set(75)
+        self._get_input_file()
+        self.percent_complete.set(15)
 
-        if self.text is None:
-            tk.messagebox.showinfo(message="Please select a file to proceed")
-            self.progress.destroy()
+        if self.input_file:
+            self._extract_text()
+            self.percent_complete.set(45)
+
+            if self.text:
+                entity_info = utils.extract_entity_info(self.text)
+                self.percent_complete.set(95)
+                self._get_output_filename()
+                utils.save_results_to_excel(
+                    entity_info, output_file=self.output_file
+                )
+                self.progress.destroy()
+                tk.messagebox.showinfo(
+                    message=f'Results saved as "{self.output_file}"'
+                )
+                del self.text
+            else:
+                showerror(message="No text to process!")
         else:
-            entity_info = utils.extract_entity_info(self.text)
-            self.percent_complete.set(95)
-            output_filename = utils.save_results_to_excel(entity_info)
-
-            self.progress.stop()
             self.progress.destroy()
-            tk.messagebox.showinfo(
-                message=f'Done! File saved as "{output_filename}"'
-            )
-
-            del self.text
 
 
 def run_app() -> None:
