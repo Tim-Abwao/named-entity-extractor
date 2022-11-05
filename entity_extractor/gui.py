@@ -16,7 +16,7 @@ logging.basicConfig(
     datefmt="%H:%M:%S",
 )
 
-with open("entity_extractor/supported_formats.txt") as file:
+with open("entity_extractor/assets/supported_formats.txt") as file:
     supported_formats = file.read().split()
 
 
@@ -34,7 +34,7 @@ class EntityExtractor(tk.Frame):
         self.master.geometry("540x300")
         self.master.resizable(False, False)
         self.master.wm_iconphoto(
-            True, tk.PhotoImage(file="entity_extractor/icon.png")
+            True, tk.PhotoImage(file="entity_extractor/assets/icon.png")
         )
         self.pack()
         self._create_widgets()
@@ -48,7 +48,7 @@ class EntityExtractor(tk.Frame):
     def _create_widgets(self) -> None:
         """Add widgets to the frame/window."""
         self.canvas = tk.Canvas(self, width=540, height=320)
-        self.background_image = tk.PhotoImage(file="entity_extractor/bg.png")
+        self.background_image = tk.PhotoImage(file="entity_extractor/assets/bg.png")
         self.canvas.create_image(
             0, 0, image=self.background_image, anchor="nw"
         )
