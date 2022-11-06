@@ -23,7 +23,8 @@ The results (*named entities* and some *context*) are then saved in an excel fil
 
     ``` bash
     pip install -U pip
-    pip install -r requirements.txt
+    pip install openpyxl pandas spacy textract
+    python -m spacy download en_core_web_md
     ```
 
 3. Start the app:
@@ -34,6 +35,8 @@ The results (*named entities* and some *context*) are then saved in an excel fil
 
 A [tkinter][tkinter] [GUI][gui_wiki] (demonstrated above) should pop up to help navigate to, and select a document to process.
 
+>**NOTE:** For help with `tkinter` - related issues, consider visiting [TkDocs][tkdocs].
+
 [spacy]: https://spacy.io/
 [textract]: https://textract.readthedocs.io/en/stable/index.html
 [textract_install]: https://textract.readthedocs.io/en/latest/installation.html
@@ -41,3 +44,4 @@ A [tkinter][tkinter] [GUI][gui_wiki] (demonstrated above) should pop up to help 
 [gui_wiki]: https://en.wikipedia.org/wiki/Graphical_user_interface
 [n_ents]: https://en.wikipedia.org/wiki/Named_entity
 [nlp]: https://en.wikipedia.org/wiki/Natural_language_processing
+[tkdocs]: https://tkdocs.com/index.html
