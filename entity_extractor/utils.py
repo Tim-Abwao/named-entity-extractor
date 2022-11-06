@@ -15,11 +15,11 @@ def process_text_chunk(nlp: en.English, text_chunk: str) -> pd.DataFrame:
     allocation errors.
 
     Args:
-        nlp (spacy.lang.en.English): Pretrained model/pipeline.
+        nlp (spacy.lang.en.English): Pretrained model pipeline.
         text_chunk (str): The text to process.
 
     Returns:
-        pd.DataFrame: Entity name, type and context as columns.
+        pandas.DataFrame: Entity name, type and context as columns.
     """
     doc = nlp(text_chunk)
     return pd.DataFrame(
@@ -38,12 +38,12 @@ def extract_entity_info(text: str) -> Dict[str, pd.DataFrame]:
         text (str): The text to process.
 
     Returns:
-        Dict[str, pd.DataFrame]: Named entity info & type descriptions.
+        Dict[str, pandas.DataFrame]: Named entity info & type descriptions.
     """
     logging.info("Predicting named entities...")
     nlp = spacy.load("en_core_web_md")
     chunked_entity_data = (
-        process_text_chunk(nlp, text_chunk=text[idx: idx + CHUNK_SIZE])
+        process_text_chunk(nlp, text_chunk=text[idx : idx + CHUNK_SIZE])
         for idx in range(0, len(text), CHUNK_SIZE)
     )
     entity_data = (
@@ -66,7 +66,7 @@ def extract_entity_info(text: str) -> Dict[str, pd.DataFrame]:
 
 def save_results_to_excel(
     entity_info: Dict[str, pd.DataFrame], output_file: Path
-):
+) -> None:
     """Save extracted information as an excel file, with a sheet for each
     entity type.
 
