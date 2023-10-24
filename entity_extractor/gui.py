@@ -87,7 +87,7 @@ class EntityExtractor(tk.Frame):
             text="Select file",
         )
         self.canvas.create_window(
-            (150, 235), anchor="nw", height=40, width=240, window=self.button
+            (150, 220), anchor="nw", height=40, width=240, window=self.button
         )
         # Interpret 'Enter' key press as button press
         self.master.bind("<Return>", lambda _: self.button.invoke())
@@ -147,7 +147,7 @@ class EntityExtractor(tk.Frame):
             orient="horizontal",
             variable=self.percent_complete,
         )
-        self.progress.place(relx=0.15, rely=0.92)
+        self.progress.place(relx=0.15, rely=0.9)
 
         self._get_input_file()
         self.percent_complete.set(15)
