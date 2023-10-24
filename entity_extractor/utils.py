@@ -49,10 +49,11 @@ def extract_entity_info(text: str) -> Dict[str, pd.DataFrame]:
     entity_data = (
         pd.concat(chunked_entity_data, ignore_index=True)
         .drop_duplicates()
-        .applymap(lambda txt: txt.replace("\n", " "))
+        .map(lambda txt: txt.replace("\n", " "))
     )
-    logging.info(f"Done. {len(entity_data):,} named entities found.")
-
+    logging.info(
+        f"Done. {entity_data['Entity'].nunique():,} named entities found."
+    )
     entity_types = entity_data["Type"].unique()
     entity_descriptions = pd.DataFrame(
         {"Type": entity_types, "Description": map(spacy.explain, entity_types)}
