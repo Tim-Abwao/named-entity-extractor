@@ -1,10 +1,8 @@
-# Named Entity Extraction with *spaCy*
+# Named Entity Extractor
 
-Predict the [named entities][n_ents] present in a text file using [spaCy][spacy]. *spaCy* is a powerful, user-friendly, open-source [Natural Language Processing][nlp] library in Python.
+Predict the [named entities][n_ents] present in a file using [spaCy][spacy]. *spaCy* is a powerful, user-friendly, open-source [Natural Language Processing][nlp] library in Python.
 
-Text to be processed is extracted from documents using [textract][textract]. Please see the [textract installation page][textract_install] for details on required dependencies.
-
-The results (*named entities* and some *context*) are then saved in an excel file.
+Text to be processed is extracted from documents using [textract][textract]. The results (*named entities* and some *context*) are then saved in an excel file.
 
 ![screencast](screen.gif)
 
@@ -35,11 +33,10 @@ The results (*named entities* and some *context*) are then saved in an excel fil
 
 A [tkinter][tkinter] [GUI][gui_wiki] (demonstrated above) should pop up to help navigate to, and select a document to process.
 
->**NOTE:** For help with `tkinter` - related issues, consider visiting [TkDocs][tkdocs].
+>**NOTE:** For help with `tkinter` - related issues, please see [TkDocs][tkdocs].
 
 [spacy]: https://spacy.io/
 [textract]: https://textract.readthedocs.io/en/stable/index.html
-[textract_install]: https://textract.readthedocs.io/en/latest/installation.html
 [tkinter]: https://docs.python.org/3/library/tkinter.html#module-tkinter
 [gui_wiki]: https://en.wikipedia.org/wiki/Graphical_user_interface
 [n_ents]: https://en.wikipedia.org/wiki/Named_entity
